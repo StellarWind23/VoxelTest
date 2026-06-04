@@ -1,6 +1,8 @@
 use godot::prelude::*;
 
-struct MyExtension;
+struct VoxCore;
 
 #[gdextension]
-unsafe impl VoxCore for MyExtension {}
+unsafe impl ExtensionLibrary for VoxCore {}
+
+mod sstr;
