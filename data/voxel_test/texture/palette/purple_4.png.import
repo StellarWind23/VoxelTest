@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cc7r6nplh21o0"
-path="res://.godot/imported/null_l.png-f9edb30dfe0e20e00146738d3342e0de.ctex"
+uid="uid://ikgnerq17gv5"
+path="res://.godot/imported/purple_4.png-15492737ee90d962962ab4a6981f2382.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://data/texture/block/null_l.png"
-dest_files=["res://.godot/imported/null_l.png-f9edb30dfe0e20e00146738d3342e0de.ctex"]
+source_file="res://data/voxel_test/texture/palette/purple_4.png"
+dest_files=["res://.godot/imported/purple_4.png-15492737ee90d962962ab4a6981f2382.ctex"]
 
 [params]
 

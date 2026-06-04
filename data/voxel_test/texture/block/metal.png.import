@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dta41dech8gnl"
-path="res://.godot/imported/null_n.png-23057e4075849d3efcea3bf4ec60603a.ctex"
+uid="uid://c0r8mqdwf6n2b"
+path="res://.godot/imported/metal.png-7d8b4b4edd32fc2ee0e33327846ccfd6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://data/texture/block/null_n.png"
-dest_files=["res://.godot/imported/null_n.png-23057e4075849d3efcea3bf4ec60603a.ctex"]
+source_file="res://data/voxel_test/texture/block/metal.png"
+dest_files=["res://.godot/imported/metal.png-7d8b4b4edd32fc2ee0e33327846ccfd6.ctex"]
 
 [params]
 
