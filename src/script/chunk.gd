@@ -1,5 +1,8 @@
 extends Node3D
 
+@export var mesh: MeshInstance3D
+@export var s_body: StaticBody3D
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

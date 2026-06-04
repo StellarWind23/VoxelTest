@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="BType" format=3 uid="uid://bc1jcf8gityvp"]
+
+[ext_resource type="Script" uid="uid://dchw0wmjxryh" path="res://src/script/res/b_type.gd" id="1_osdnd"]
+
+[resource]
+script = ExtResource("1_osdnd")
+id = &"voxel_test:air"
+metadata/_custom_type_script = "uid://dchw0wmjxryh"

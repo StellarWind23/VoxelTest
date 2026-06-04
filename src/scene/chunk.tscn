@@ -2,7 +2,11 @@
 
 [ext_resource type="Script" uid="uid://c0xfhks5qv8bx" path="res://src/script/chunk.gd" id="1_s7jf2"]
 
-[node name="Node3D" type="Node3D" unique_id=210022019]
+[node name="Node3D" type="Node3D" unique_id=210022019 node_paths=PackedStringArray("mesh", "s_body")]
 script = ExtResource("1_s7jf2")
+mesh = NodePath("MeshInstance3D")
+s_body = NodePath("StaticBody3D")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1804229534]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1025674416]
