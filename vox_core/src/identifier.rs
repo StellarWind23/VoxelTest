@@ -23,25 +23,25 @@ impl Id {
     fn of(namespace: GString, path: GString) -> Gd<Id>{
         return Gd::from_object(
             Id { 
-                namespace: StringName::from(namespace),
-                path: StringName::from(path)
+                namespace: StringName::from(&namespace),
+                path: StringName::from(&path)
             }
         )
     }
 
     #[func]
     fn namespace(&self) -> GString {
-        return GString::from(self.namespace.clone());
+        return GString::from(&self.namespace);
     }
 
     #[func]
     fn path(&self) -> GString {
-        return GString::from(self.path.clone());
+        return GString::from(&self.path);
     }
 
     #[func]
     fn as_string(&self) -> GString {
-        return GString::from(self.int_as_string())
+        return GString::from(&self.int_as_string())
     }
 
     #[func]

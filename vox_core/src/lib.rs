@@ -5,7 +5,6 @@ struct VoxCore;
 #[gdextension]
 unsafe impl ExtensionLibrary for VoxCore {}
 
-mod sstr;
 mod sbyte;
 mod byte;
 mod vec2b;
@@ -16,4 +15,3 @@ mod registry;
 mod identifier;
 mod gdres;
 mod resdb;
-mod bitbuffer;

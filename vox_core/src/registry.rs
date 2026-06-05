@@ -7,7 +7,7 @@ use crate::{gdres::GdRes, identifier::Id, resdb::ResourceDB};
 #[derive(GodotClass, Debug, Default)]
 #[class(base=RefCounted, init)]
 pub struct Registry {
-    hash: Option<u64>,
+    hash: Option<u32>,
     id_to_object: HashMap<Id, GdRes>
 }
 

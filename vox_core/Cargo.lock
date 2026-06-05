@@ -89,6 +89,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "hash32"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8e4e11d13d42fc8d55326b323c63978c75721fbbb695a6e6686765bcb8b33917"
+
+[[package]]
 name = "heck"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -154,4 +160,5 @@ name = "vox_core"
 version = "0.1.0"
 dependencies = [
  "godot",
+ "hash32",
 ]

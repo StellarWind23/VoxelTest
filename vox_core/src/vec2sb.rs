@@ -69,7 +69,7 @@ impl Vec2sb {
 
     #[func]
     pub fn to_string(&self) -> GString {
-        format!("{},{}", self.x, self.y).into()
+        GString::from(&format!("{},{}", self.x, self.y))
     }
 
     #[func]

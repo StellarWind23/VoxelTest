@@ -2,8 +2,9 @@ use godot::prelude::*;
 use std::ops::*;
 use crate::byte::Byte;
 
-#[derive(GodotClass, Debug)]
+#[derive(GodotClass, GodotConvert, Debug)]
 #[class(base=RefCounted, init)]
+#[godot(transparent)]
 pub struct SByte {
     v: i8
 }
@@ -71,24 +72,6 @@ impl SByte {
     }
 }
 
-impl GodotConvert for SByte{
-    type Via = i8;
-}
-
-impl ToGodot for SByte {
-    type ToVia<'v> = i8;
-
-    fn to_godot(&self) -> Self::ToVia<'_> {
-        return self.v
-    }
-}
-
-impl FromGodot for SByte {
-    fn try_from_godot(via: Self::Via) -> Result<Self, ConvertError> {
-        return Ok(SByte { v: via });
-    }
-}
-
 #[godot_api]
 impl SByte {
 
@@ -107,7 +90,7 @@ impl SByte {
 
     #[func]
     pub fn to_string(&self) -> GString {
-        format!("{}", self.v).into()
+        GString::from(&format!("{}", self.v))
     }
 
     #[func]

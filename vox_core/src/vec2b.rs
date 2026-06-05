@@ -44,45 +44,6 @@ impl Vec2b {
     }
 }
 
-// Marker trait for Godot
-impl GodotConvert for Vec2b {
-    type Via = VariantArray; // intermediate type
-}
-
-// Convert from Vec3b -> Godot Variant
-impl ToGodot for Vec2b {
-    type ToVia<'v> = VariantArray
-    where
-        Self: 'v;
-
-    fn to_godot(&self) -> Self::ToVia<'_> {
-        let mut arr = VariantArray::new();
-        arr.push(&self.x().to_variant());
-        arr.push(&self.y().to_variant());
-        return arr;
-    }
-}
-
-
-// Convert from Godot Variant -> Vec3b
-impl FromGodot for Vec2b {
-    fn try_from_godot(via: Self::Via) -> Result<Self, ConvertError> {
-        if via.len() != 2 {
-            return Err(ConvertError::new("Expected VariantArray of length 2 for Vec2b"));
-        }
-
-        let v0: i64 = via.get(0).ok_or_else(|| ConvertError::new("Missing element 0"))?
-            .try_to::<i64>().map_err(|_| ConvertError::new("Element 0 not an i64"))?;
-        let v1: i64 = via.get(1).ok_or_else(|| ConvertError::new("Missing element 1"))?
-            .try_to::<i64>().map_err(|_| ConvertError::new("Element 1 not an i64"))?;
-
-        let x: u8 = v0.try_into().map_err(|_| ConvertError::new("x out of u8 range"))?;
-        let y: u8 = v1.try_into().map_err(|_| ConvertError::new("y out of u8 range"))?;
-
-        Ok(Vec2b::int_of(x, y))
-    }
-}
-
 #[godot_api]
 impl Vec2b {
 
@@ -112,7 +73,7 @@ impl Vec2b {
 
     #[func]
     pub fn to_string(&self) -> GString {
-        GString::from(format!("{},{}", self.x, self.y))
+        GString::from(&format!("{},{}", self.x, self.y))
     }
 
     #[func]

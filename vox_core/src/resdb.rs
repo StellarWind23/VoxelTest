@@ -1,20 +1,20 @@
 use std::collections::HashMap;
-use std::hash::{DefaultHasher, Hash};
-use std::hash::Hasher;
-
+use std::hash::{Hash};
 use godot::{classes::ClassDb, prelude::*};
+use hash32::FnvHasher;
+use hash32::Hasher;
 
 
 #[derive(GodotClass, Debug, Default)]
 #[class(base=Resource, init)]
 pub struct ResourceDB {
-    names: HashMap<String, u64>,
-    types: HashMap<u64, HashMap<String, VariantType>>,
+    names: HashMap<String, u32>,
+    types: HashMap<u32, HashMap<String, VariantType>>,
 }
 
 impl ResourceDB {
 
-    pub fn int_insert(&mut self, resource: &Gd<Resource>) -> Option<u64> {
+    pub fn int_insert(&mut self, resource: &Gd<Resource>) -> Option<u32> {
         //Gather
         let name = resource.get_class();
         let n_str = name.to_string();
@@ -34,18 +34,18 @@ impl ResourceDB {
         }
     }
 
-    pub fn int_lookup(&self, name: &str) -> Option<&u64> {
+    pub fn int_lookup(&self, name: &str) -> Option<&u32> {
         self.names.get(name)
     }
 
-    pub fn compute_hash(resource: &Gd<Resource>) -> u64 {
+    pub fn compute_hash(resource: &Gd<Resource>) -> u32 {
         let name = resource.get_class();
         let types = Self::get_types(&name);
         Self::int_compute_hash(&name.to_string(), &types)
     }
 
-    fn int_compute_hash(name: &str, types: &HashMap<String, VariantType>) -> u64 {
-        let mut hasher = DefaultHasher::new();
+    fn int_compute_hash(name: &str, types: &HashMap<String, VariantType>) -> u32 {
+        let mut hasher: FnvHasher = Default::default();
         name.hash(&mut hasher);
 
         let mut keys: Vec<&String> = types.keys().collect();
@@ -58,12 +58,12 @@ impl ResourceDB {
             }
         }
 
-        hasher.finish()
+        hasher.finish32()
     }
 
     pub fn get_types(class_name: &GString) -> HashMap<String, VariantType> {
         let class_db = ClassDb::singleton();
-        let prop_list: Array<Dictionary> = class_db.class_get_property_list(class_name.arg());
+        let prop_list: Array<Dictionary<Variant, Variant>> = class_db.class_get_property_list(&StringName::from(class_name));
         let mut types: HashMap<String, VariantType> = HashMap::new();
         
         for i in 0..prop_list.len() {
@@ -89,13 +89,13 @@ impl ResourceDB {
     }
 
     #[func]
-    fn insert(&mut self, resource: Gd<Resource>) -> u64{
+    pub fn insert(&mut self, resource: Gd<Resource>) -> u32{
         let r = self.int_insert(&resource).unwrap_or(0);
         r
     }
 
     #[func]
-    fn lookup(&self, name: GString) -> u64 {
+    pub fn lookup(&self, name: GString) -> u32 {
         let r = self.int_lookup(&name.to_string()).unwrap_or(&0);
         *r
     }
