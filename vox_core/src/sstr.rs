@@ -6,7 +6,7 @@ struct SStr {
     s_str: PackedByteArray
 }
 
-pub impl SStr {
+impl SStr {
     fn init(str: String) -> Self {
         SStr { s_str: PackedByteArray::new() }
     }
@@ -15,7 +15,7 @@ pub impl SStr {
         let c_arr = str.chars();
 
         for c in c_arr {
-            
+
         }
     }
 }

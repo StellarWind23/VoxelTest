@@ -6,3 +6,14 @@ struct VoxCore;
 unsafe impl ExtensionLibrary for VoxCore {}
 
 mod sstr;
+mod sbyte;
+mod byte;
+mod vec2b;
+mod vec2sb;
+mod vec3b;
+mod vec3sb;
+mod registry;
+mod identifier;
+mod gdres;
+mod resdb;
+mod bitbuffer;

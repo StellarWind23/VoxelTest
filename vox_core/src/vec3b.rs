@@ -1,0 +1,162 @@
+use godot::prelude::*;
+use std::ops::{Add, Sub};
+use crate::{byte::Byte, vec3sb::Vec3sb};
+
+#[derive(GodotClass, Debug, Clone, Copy, PartialEq, Eq)]
+#[class(base=RefCounted, init)]
+pub struct Vec3b {
+    x: u8,
+    y: u8,
+    z: u8
+}
+
+impl Vec3b {
+
+    pub fn int_of(x: u8, y: u8, z: u8) -> Vec3b {
+        Vec3b { x: x, y: y, z: z }
+    }
+
+    pub fn int_add(&self, other: &Vec3b) -> Vec3b {
+        Vec3b {
+            x: self.x.add(other.x),
+            y: self.y.add(other.y),
+            z: self.z.add(other.z),
+        }
+    }
+
+    pub fn int_add_wrap(&self, other: &Vec3b) -> Vec3b {
+        Vec3b {
+            x: self.x.wrapping_add(other.x),
+            y: self.y.wrapping_add(other.y),
+            z: self.z.wrapping_add(other.z),
+        }
+    }
+
+    pub fn int_sub(&self, other: &Vec3b) -> Vec3b {
+        Vec3b {
+            x: self.x.sub(other.x),
+            y: self.y.sub(other.y),
+            z: self.z.sub(other.z),
+        }
+    }
+
+    pub fn int_sub_wrap(&self, other: &Vec3b) -> Vec3b {
+        Vec3b {
+            x: self.x.wrapping_sub(other.x),
+            y: self.y.wrapping_sub(other.y),
+            z: self.z.wrapping_sub(other.z),
+        }
+    }
+}
+
+// Marker trait for Godot
+impl GodotConvert for Vec3b {
+    type Via = VariantArray; // intermediate type
+}
+
+// Convert from Vec3b -> Godot Variant
+impl ToGodot for Vec3b {
+    type ToVia<'v> = VariantArray
+    where
+        Self: 'v;
+
+    fn to_godot(&self) -> Self::ToVia<'_> {
+        let mut arr = VariantArray::new();
+        arr.push(&(self.x()).to_variant());
+        arr.push(&(self.y()).to_variant());
+        arr.push(&(self.z()).to_variant());
+        arr
+    }
+}
+
+
+// Convert from Godot Variant -> Vec3b
+impl FromGodot for Vec3b {
+    fn try_from_godot(via: Self::Via) -> Result<Self, ConvertError> {
+        if via.len() != 3 {
+            return Err(ConvertError::new("Expected VariantArray of length 3 for Vec3b"));
+        }
+
+        let v0: i64 = via.get(0).ok_or_else(|| ConvertError::new("Missing element 0"))?
+            .try_to::<i64>().map_err(|_| ConvertError::new("Element 0 not an i64"))?;
+        let v1: i64 = via.get(1).ok_or_else(|| ConvertError::new("Missing element 1"))?
+            .try_to::<i64>().map_err(|_| ConvertError::new("Element 1 not an i64"))?;
+        let v2: i64 = via.get(2).ok_or_else(|| ConvertError::new("Missing element 2"))?
+            .try_to::<i64>().map_err(|_| ConvertError::new("Element 2 not an i64"))?;
+
+        let x: u8 = v0.try_into().map_err(|_| ConvertError::new("x out of u8 range"))?;
+        let y: u8 = v1.try_into().map_err(|_| ConvertError::new("y out of u8 range"))?;
+        let z: u8 = v2.try_into().map_err(|_| ConvertError::new("z out of u8 range"))?;
+
+        Ok(Vec3b::int_of(x, y, z))
+    }
+}
+
+
+
+#[godot_api]
+impl Vec3b {
+
+    #[func]
+    pub fn of(x: u8, y: u8, z: u8) -> Gd<Vec3b> {
+        Gd::from_object(Vec3b { x, y, z})
+    }
+
+    #[func]
+    pub fn of_bytes(x: Gd<Byte>, y: Gd<Byte>, z: Gd<Byte>) -> Gd<Vec3b> {
+        let x_ref = x.bind().v();
+        let y_ref = y.bind().v();
+        let z_ref = z.bind().v();
+        Gd::from_object(Vec3b {x: x_ref, y: y_ref, z: z_ref})
+    }
+
+    #[func]
+    pub fn x(&self) -> u8 { self.x }
+
+    #[func]
+    pub fn y(&self) -> u8 { self.y }
+
+    #[func]
+    pub fn z(&self) -> u8 { self.z }
+
+    #[func]
+    pub fn set(&mut self, x: u8, y: u8, z: u8) {
+        self.x = x;
+        self.y = y;
+        self.z = z;
+    }
+
+    #[func]
+    pub fn to_string(&self) -> GString {
+        format!("{},{},{}", self.x, self.y, self.z).into()
+    }
+
+    #[func]
+    pub fn to_i8(&self) -> Gd<Vec3sb> {
+        Vec3sb::of(self.x as i8, self.y as i8, self.z as i8)
+    }
+
+    #[func]
+    pub fn add(&self, other: Gd<Vec3b>) -> Gd<Vec3b> {
+        let other_ref = other.bind();
+        Gd::from_object(self.int_add(&*other_ref))
+    }
+
+    #[func]
+    pub fn add_wrap(&self, other: Gd<Vec3b>) -> Gd<Vec3b> {
+        let other_ref = other.bind();
+        Gd::from_object(self.int_add_wrap(&*other_ref))
+    }
+
+    #[func]
+    pub fn sub(&self, other: Gd<Vec3b>) -> Gd<Vec3b> {
+        let other_ref = other.bind();
+        Gd::from_object(self.int_sub(&*other_ref))
+    }
+
+    #[func]
+    pub fn sub_wrap(&self, other: Gd<Vec3b>) -> Gd<Vec3b> {
+        let other_ref = other.bind();
+        Gd::from_object(self.int_sub_wrap(&*other_ref))
+    }
+}
