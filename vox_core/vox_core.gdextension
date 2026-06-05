@@ -1,0 +1,14 @@
+[configuration]
+entry_symbol = "gdext_rust_init"
+compatibility_minimum = 4.1
+reloadable = true
+
+[libraries]
+linux.debug.x86_64 =     "res://vox_core/target/debug/libvox_core.so"
+linux.release.x86_64 =   "res://vox_core/target/release/libvox_core.so"
+windows.debug.x86_64 =   "res://vox_core/target/debug/vox_core.dll"
+windows.release.x86_64 = "res://vox_core/target/release/vox_core.dll"
+macos.debug =            "res://vox_core/target/debug/libvox_core.dylib"
+macos.release =          "res://vox_core/target/release/libvox_core.dylib"
+macos.debug.arm64 =      "res://vox_core/target/debug/libvox_core.dylib"
+macos.release.arm64 =    "res://vox_core/target/release/libvox_core.dylib"

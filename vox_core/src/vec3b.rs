@@ -59,10 +59,29 @@ impl Vec3b {
 
     #[func]
     pub fn of_bytes(x: Gd<Byte>, y: Gd<Byte>, z: Gd<Byte>) -> Gd<Vec3b> {
-        let x_ref = x.bind().v();
-        let y_ref = y.bind().v();
-        let z_ref = z.bind().v();
-        Gd::from_object(Vec3b {x: x_ref, y: y_ref, z: z_ref})
+        Gd::from_object(Vec3b {
+            x: x.bind().v(),
+            y: y.bind().v(),
+            z: z.bind().v()
+        })
+    }
+
+    #[func]
+    pub fn of_byte_array(bytes: PackedByteArray) -> Gd<Vec3b> {
+        Gd::from_object(Vec3b {
+            x: bytes.get(0).unwrap_or_default(),
+            y: bytes.get(1).unwrap_or_default(),
+            z: bytes.get(2).unwrap_or_default()
+        })
+    }
+
+    #[func]
+    pub fn to_byte_array(&self) -> PackedByteArray {
+       let mut pa =  PackedByteArray::new();
+       pa.push(self.x);
+       pa.push(self.y);
+       pa.push(self.z);
+       return pa;
     }
 
     #[func]

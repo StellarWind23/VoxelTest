@@ -62,6 +62,24 @@ impl Vec3sb {
     }
 
     #[func]
+    pub fn of_byte_array(bytes: PackedByteArray) -> Gd<Vec3sb> {
+        Gd::from_object(Vec3sb {
+            x: bytes.get(0).unwrap_or_default() as i8,
+            y: bytes.get(1).unwrap_or_default() as i8,
+            z: bytes.get(2).unwrap_or_default() as i8
+        })
+    }
+
+    #[func]
+    pub fn to_byte_array(&self) -> PackedByteArray {
+       let mut pa =  PackedByteArray::new();
+       pa.push(self.x as u8);
+       pa.push(self.y as u8);
+       pa.push(self.z as u8);
+       return pa;
+    }
+
+    #[func]
     pub fn x(&self) -> i8 { self.x }
 
     #[func]

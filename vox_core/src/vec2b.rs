@@ -60,6 +60,22 @@ impl Vec2b {
     }
 
     #[func]
+    pub fn of_byte_array(bytes: PackedByteArray) -> Gd<Vec2b> {
+        Gd::from_object(Vec2b {
+            x: bytes.get(0).unwrap_or_default(),
+            y: bytes.get(1).unwrap_or_default()
+        })
+    }
+
+    #[func]
+    pub fn to_byte_array(&self) -> PackedByteArray {
+       let mut pa =  PackedByteArray::new();
+       pa.push(self.x);
+       pa.push(self.y);
+       return pa;
+    }
+
+    #[func]
     pub fn x(&self) -> u8 { self.x }
 
     #[func]
