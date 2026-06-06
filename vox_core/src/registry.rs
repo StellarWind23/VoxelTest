@@ -139,6 +139,6 @@ impl Registry {
 
     #[func]
     fn is_locked(&self) -> bool {
-        self.locked
+        self.int_is_locked()
     }
 }

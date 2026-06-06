@@ -12,10 +12,6 @@ pub struct Vec3b {
 
 impl Vec3b {
 
-    pub fn int_of(x: u8, y: u8, z: u8) -> Vec3b {
-        Vec3b { x: x, y: y, z: z }
-    }
-
     pub fn int_add(&self, other: &Vec3b) -> Vec3b {
         Vec3b {
             x: self.x.add(other.x),
