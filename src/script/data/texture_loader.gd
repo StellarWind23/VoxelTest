@@ -2,7 +2,7 @@
 class_name TextureLoader extends Node
 
 var atlas: AtlasTexture
-var map: Registry
+var registry: Registry
 
 func _ready() -> void:
-	pass
+	registry = Registry.new()

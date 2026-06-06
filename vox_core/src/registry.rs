@@ -70,7 +70,7 @@ impl Registry {
 
         for i in self.id_to_object.iter() {
             i.0.hash(&mut hasher);
-            i.1.get_hash().hash(&mut hasher);
+            i.1.get_deep_hash().hash(&mut hasher);
         }
 
         self.cache_hash = hasher.finish();
