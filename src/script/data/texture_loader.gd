@@ -1,4 +1,8 @@
+@tool
 class_name TextureLoader extends Node
 
 var atlas: AtlasTexture
-var map: Dictionary[StringName, Vector2i]
+var map: Registry
+
+func _ready() -> void:
+	pass

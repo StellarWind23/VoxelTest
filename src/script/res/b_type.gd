@@ -6,4 +6,4 @@ class_name BType extends Resource
 @export var stats: BStats
 @export var events: Dictionary
 @export_category("Advanced")
-@export var sounds: Dictionary[StringName, StringName]
+@export var sounds: Dictionary[Id, Id]

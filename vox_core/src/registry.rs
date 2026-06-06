@@ -1,6 +1,7 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, hash::{DefaultHasher, Hasher}};
 
 use godot::prelude::*;
+use std::hash::{Hash};
 
 use crate::{gdres::GdRes, identifier::Id, resdb::ResourceDB};
 
@@ -8,12 +9,18 @@ use crate::{gdres::GdRes, identifier::Id, resdb::ResourceDB};
 #[class(base=RefCounted, init)]
 pub struct Registry {
     hash: Option<u32>,
-    id_to_object: HashMap<Id, GdRes>
+    cache_hash: u64,
+    id_to_object: HashMap<Id, GdRes>,
+    locked: bool
 }
 
 impl Registry {
 
     pub fn int_register(&mut self, id: Id, entry: Gd<Resource>) -> Result<(), &str>{
+
+        if self.locked {
+            return Err("registry has been locked!")
+        }
 
         let entry_hash = ResourceDB::compute_hash(&entry);
 
@@ -44,6 +51,40 @@ impl Registry {
             None => None
         }
     }
+
+    pub fn int_get_type_hash(&self) -> u32 {
+        match self.hash {
+            Some(h) => {return h}
+            None => {return 0}
+        }
+    }
+
+    pub fn int_cache_hash(&mut self) -> u64 {
+
+        //If locked don't recalculate immediately return.
+        if self.locked {
+            return self.cache_hash;
+        }
+
+        let mut hasher = DefaultHasher::new();
+
+        for i in self.id_to_object.iter() {
+            i.0.hash(&mut hasher);
+            i.1.get_hash().hash(&mut hasher);
+        }
+
+        self.cache_hash = hasher.finish();
+        return self.cache_hash;
+    }
+    
+    pub fn int_lock(&mut self) {
+        self.int_cache_hash();
+        self.locked = true;
+    }
+
+    pub fn int_is_locked(&self) -> bool {
+        return self.locked;
+    }
 }
 
 #[godot_api]
@@ -51,7 +92,7 @@ impl Registry {
 
     #[func]
     fn new() -> Gd<Registry> {
-        Gd::from_object(Registry { hash: None, id_to_object: HashMap::default() })
+        Gd::from_object(Registry { hash: None, cache_hash: 0, id_to_object: HashMap::default(), locked: false })
     }
 
     #[func]
@@ -69,15 +110,35 @@ impl Registry {
     #[func]
     fn contains(&self, id: Gd<Id>) -> bool {
         let id_ref = id.bind();
-        return self.id_to_object.contains_key(&*id_ref)
+        self.id_to_object.contains_key(&*id_ref)
     }
 
     #[func]
     fn lookup(&self, id: Gd<Id>) -> Option<Gd<Resource>> {
         let id_ref = id.bind();
         match self.int_lookup(&*id_ref) {
-            Some(v) => { return Some(v.get_resource().clone());},
+            Some(v) => { return Some(v.get_resource().clone())},
             None => { None }
         }
+    }
+
+    #[func]
+    fn get_type_hash(&self) -> u32 {
+        self.int_get_type_hash()
+    }
+
+    #[func]
+    fn get_cache_hash(&mut self) -> i64 {
+        self.int_cache_hash() as i64
+    }
+
+    #[func]
+    fn lock(&mut self) {
+        self.int_lock();
+    }
+
+    #[func]
+    fn is_locked(&self) -> bool {
+        self.locked
     }
 }
