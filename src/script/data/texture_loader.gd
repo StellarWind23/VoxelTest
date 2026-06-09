@@ -17,6 +17,10 @@ var gui_registry: Registry
 var entity_atlas: AtlasTexture
 var entity_registry: Registry
 
+#Palette Swap
+var palette_key_registry: Registry
+var palette_swap_registry: Registry
+
 static var _instance: TextureLoader
 
 func instance():
@@ -26,18 +30,22 @@ func _ready() -> void:
 	#Block
 	block_registry = Registry.new()
 	block_atlas = AtlasTexture.new()
-	#Block
+	#Item
 	item_registry = Registry.new()
 	item_atlas = AtlasTexture.new()
-	#particle
+	#Particle
 	particle_registry = Registry.new()
 	particle_atlas = AtlasTexture.new()
-	#gui
+	#GUI
 	gui_registry = Registry.new()
 	gui_atlas = AtlasTexture.new()
-	#entity
+	#Entity
 	entity_registry = Registry.new()
 	entity_atlas = AtlasTexture.new()
+	
+	#Palette Swap
+	palette_key_registry = Registry.new()
+	palette_swap_registry = Registry.new()
 	
 	
 	#Set instance
